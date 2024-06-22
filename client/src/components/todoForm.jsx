@@ -2,7 +2,7 @@
 import  { useState } from 'react';
 import axios from 'axios';
 
-function TodoForm() {
+function TodoForm({ setRef}) {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
 
@@ -12,7 +12,10 @@ function TodoForm() {
     const response = await axios.post(process.env.REACT_APP_API_URL+"/todos", { name, description });
     console.log(response.data);
     setName('');
-    setDescription('');}
+    setDescription('');
+    setRef((pre)=>!pre);
+  
+  }
     catch(err){
     // alert('Error in creating todo try again')
     console.log(err);

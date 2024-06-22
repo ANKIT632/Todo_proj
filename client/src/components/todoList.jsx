@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-undef */
 
 import { useState, useEffect } from 'react';
@@ -7,19 +8,23 @@ import { TfiWrite } from "react-icons/tfi";
 
 
 
-function TodoList() {
+function TodoList({refresh}) {
   const [todos, setTodos] = useState([]);
   const [editTodoId, setEditTodoId] = useState(null);
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [date, setDate] = useState('');
+  const [isLoading,setIsLoading]=useState(false);
 
   // get data
   const fetchTodos = async () => {
     try{
+    
+      setIsLoading(true);
     const response = await axios.get(process.env.REACT_APP_API_URL + "/todos");
     
     setTodos(response.data.data);
+    setIsLoading(false);
 
     }
     catch(err){
@@ -69,26 +74,26 @@ function TodoList() {
 
   useEffect(() => {
     fetchTodos();
-  }, [todos]);
+  }, [refresh]);
 
   return (
     <div className=' mt-5 w-full '>
-      <h1 className='text-xl font-bold ml-4'>Todo List</h1>
+      <h1 className='text-xl font-bold md:ml-4'>Todo List</h1>
 
-     { todos.length?<div className='flex flex-col m-2  max-md:overflow-x-scroll overflow-y-hidden text-center  items-center  '>
+     {(todos.length>0 ) && <div className='flex flex-col md:m-2  max-md:overflow-x-scroll overflow-y-hidden text-center  items-center  '>
         <table className=" table-auto shadow-md md:w-[97%]">
           <thead>
             <tr>
-              <th className="px-4 py-2 border bg-blue-800 text-white">Name</th>
-              <th className="px-4 py-2 border bg-blue-800 text-white">Description</th>
-              <th className="px-4 py-2 border bg-blue-800 text-white">Date</th>
-              <th className="px-4 py-2 border bg-blue-800 text-white">Action</th>
+              <th className="px-1 py-2 border bg-blue-800 text-white">Name</th>
+              <th className="px-1 py-2 border bg-blue-800 text-white">Description</th>
+              <th className="px-1 py-2 border bg-blue-800 text-white">Date</th>
+              <th className="px-1 py-2 border bg-blue-800 text-white">Action</th>
             </tr>
           </thead>
           <tbody className='text-sm font-semibold '>
             {todos.map((todo) => (
               <tr key={todo._id}>
-                <td className="px-2 py-1.5 border w-fit ">
+                <td className="px-1 py-1.5 border w-fit ">
                   <input
 
                     type="text"
@@ -100,7 +105,7 @@ function TodoList() {
 
                   />
                 </td>
-                <td className="px-2 py-1.5 border"> <input
+                <td className="px-1 py-1.5 border"> <input
                  
                   type="text"
                   name='description'
@@ -111,7 +116,7 @@ function TodoList() {
 
                 />
                 </td>
-                <td className="px-2 py-1.5 border"><input
+                <td className="px-1 py-1.5 border"><input
                   id='date'
                   type="date"
                   name='Date'
@@ -122,7 +127,7 @@ function TodoList() {
                   </td>
 
 
-                <td className="px-2 py-1.5 border text-lg">
+                <td className="px-1 py-1.5 border text-lg">
                   <div className='flex gap-8 cursor-pointer'>
                     {(editTodoId !== todo._id) ? <TfiWrite className='text-blue-500 cursor-pointer' onClick={() => editData(todo.name, todo.description, todo.Date, todo._id)} /> : <button  className='text-sm font-semibold bg-green-400 rounded-sm px-2 text-white' onClick={()=>updateHanddler(todo._id)}>Update</button>}
                     <MdDeleteForever className='text-red-500' onClick={() => deleteTodo(todo._id)} />
@@ -132,8 +137,11 @@ function TodoList() {
               </tr>
             ))}
           </tbody>
+
         </table>
-      </div>:<h4 className='m-2 text-center font-mono font-bold'>Not todos found</h4>}
+      </div>} {(todos.length===0 && !isLoading) && <h4 className='m-2 text-center font-mono font-bold'>Not todos found</h4>}
+
+      {isLoading && <h4 className='m-2 text-center font-mono font-bold'>Loading..</h4>}
     </div>
   );
 }
