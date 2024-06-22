@@ -21,24 +21,20 @@ exports.createTodos = async (req, res) => {
 // Get all todos
 
 exports.getTodos = async (req, res) => {
-    const pageSize = 30;
-    const page = Number(req.query.page) || 1;
 
   
     try {
-      const numberOfTodos = await Todo.countDocuments({});
+
       const todos = await Todo.find()
-        .sort({ createdAt: -1 })
-        .skip(pageSize * (page - 1))
-        .limit(pageSize);
+        .sort({ createdAt: -1 });
   
       return res.status(200).send({
-        totalPages: Math.ceil(numberOfTodos / pageSize),
         status: true,
         data: todos,
         
       });
-    } catch (err) {
+    } 
+    catch (err) {
       return res.status(500).send({ status: false, message: "try Again !!"});
     }
   };
