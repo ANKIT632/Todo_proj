@@ -55,7 +55,7 @@ function TodoList() {
     const response = await axios.put(process.env.REACT_APP_API_URL + "/todos/" + id, {
       name: name,
       description: description,
-      date: date
+      Date: date
     });
    alert(response.data.message)
   

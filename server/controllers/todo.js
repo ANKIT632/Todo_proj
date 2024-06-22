@@ -44,6 +44,7 @@ exports.getTodos = async (req, res) => {
 exports.updateTodo = async (req, res) => {
 
     try {
+      
         const updatedTodo = await Todo.findByIdAndUpdate(req.params.id, req.body, { new: true });
 
         if (!updatedTodo) {
