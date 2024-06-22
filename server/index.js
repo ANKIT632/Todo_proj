@@ -17,6 +17,16 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // route
 require('./routes/todo')(app);
 
+app.get('/', (req, res) => {
+    res.send('Hello server');
+
+});
+
+app.get("*", (req, res) => {
+    res.send('404 page not found');
+});
+
+
 
 mongoose.connect(process.env.MONGODB_URI)
     .then(() => {
