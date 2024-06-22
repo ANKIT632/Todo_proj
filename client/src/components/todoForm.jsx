@@ -14,7 +14,8 @@ function TodoForm() {
     setName('');
     setDescription('');}
     catch(err){
-    alert('Error in creating todo try again')
+    // alert('Error in creating todo try again')
+    console.log(err);
     }
   };
 

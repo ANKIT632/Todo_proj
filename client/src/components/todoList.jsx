@@ -18,10 +18,12 @@ function TodoList() {
   const fetchTodos = async () => {
     try{
     const response = await axios.get(process.env.REACT_APP_API_URL + "/todos");
+    
     setTodos(response.data.data);
+
     }
     catch(err){
-      alert('Error in fetching todos try again')
+      // alert('Error in fetching todos try again');
     }
   };
 
@@ -35,7 +37,7 @@ function TodoList() {
     fetchTodos();
     }
     catch(err){
-      alert('Error in deleting todo try again')
+      // alert('Error in deleting todo try again')
     }
   }
 
@@ -60,7 +62,7 @@ function TodoList() {
     fetchTodos();
     setEditTodoId(null);}
     catch(err){
-      alert('Error in updating todo try again')
+      // alert('Error in updating todo try again');
     }
   
   }
@@ -73,7 +75,7 @@ function TodoList() {
     <div className=' mt-5 w-full '>
       <h1 className='text-xl font-bold ml-4'>Todo List</h1>
 
-      <div className='flex flex-col m-2  max-md:overflow-x-scroll overflow-y-hidden text-center  items-center  '>
+     { todos.length?<div className='flex flex-col m-2  max-md:overflow-x-scroll overflow-y-hidden text-center  items-center  '>
         <table className=" table-auto shadow-md md:w-[97%]">
           <thead>
             <tr>
@@ -131,7 +133,7 @@ function TodoList() {
             ))}
           </tbody>
         </table>
-      </div>
+      </div>:<h4 className='m-2 text-center font-mono font-bold'>Not todos found</h4>}
     </div>
   );
 }
